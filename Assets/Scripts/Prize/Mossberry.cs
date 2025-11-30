@@ -12,7 +12,7 @@ public class Mossberry : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        StartCoroutine(Delay());
     }
 
     // Update is called once per frame
@@ -40,5 +40,13 @@ public class Mossberry : MonoBehaviour
         {
             playerInside = false;
         }
+    }
+
+	IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(3f);
+
+        // Code that runs after the delay
+        Debug.Log("3 seconds have passed!");
     }
 }

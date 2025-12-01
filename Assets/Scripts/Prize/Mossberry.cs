@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Mossberry : MonoBehaviour
 {
+    public CollectibleManager manager;
     private AudioSource audioSource;
 	private bool playerInside = false;
     
@@ -23,6 +24,7 @@ public class Mossberry : MonoBehaviour
         {
 			audioSource.clip = audioClips[0];
         	audioSource.Play();
+            manager.OnCollectiblePicked();
             berry.SetActive(false);
         }
     }

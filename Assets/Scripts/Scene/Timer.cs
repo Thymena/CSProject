@@ -1,41 +1,48 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
 public class Timer : MonoBehaviour
 {
-    [SerializeField] TextMeshProUGUI text;
-    
-    public GameObject player;
-    public GameObject berryControl;
-    public PlayerHP playerHP;
-    public BerryControl setTime;
-    public float damage = 100;
-    public float time;
+    [SerializeField] private TextMeshProUGUI text;
 
-    void Start()
+    public GameObject player;
+    public PlayerHP playerHP;
+
+    public CollectibleManager collectibleManager;
+    public float damage = 100f;
+
+    private void Start()
     {
-        setTime = berryControl.GetComponent<BerryControl>(); 
-        time = setTime.time;
+        // Subscribe to manager timer updates
+        collectibleManager.OnTimerChanged += UpdateTimerUI;
+
+        // Initialize UI immediately
+        UpdateTimerUI(collectibleManager.CurrentTimer);
     }
 
-  
-    void Update()
+    private void UpdateTimerUI(float time)
     {
-        time -=  Time.deltaTime;
-        
-        if (time <= 0)
+        // Apply damage when timer hits zero or below
+        if (time <= 0f)
         {
-            playerHP = player.GetComponent<PlayerHP>();
+            if (playerHP == null)
+                playerHP = player.GetComponent<PlayerHP>();
+
             playerHP.health -= damage;
         }
-        
-        int minutes =  Mathf.FloorToInt(time / 60);
-        int seconds = Mathf.FloorToInt(time % 60);
+
+        // Display timer (MM:SS)
+        int minutes = Mathf.FloorToInt(time / 60f);
+        int seconds = Mathf.FloorToInt(time % 60f);
+
         text.text = string.Format("{0:00}:{1:00}", minutes, seconds);
-        
-        
-        
+    }
+
+    private void OnDestroy()
+    {
+        // Prevent errors when exiting scene
+        if (collectibleManager != null)
+            collectibleManager.OnTimerChanged -= UpdateTimerUI;
     }
 }
+

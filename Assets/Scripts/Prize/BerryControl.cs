@@ -1,30 +1,83 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
-public class BerryControl : MonoBehaviour
+public class CollectibleManager : MonoBehaviour
 {
-    public int berryCount = 0; 
-    public float time = 90f;
+    [Header("Collectible Settings")]
+    public GameObject[] collectibles;       // Assign your 9 collectibles
+    public float baseTimer = 90f;           // Starting timer per collectible
+    public float timerReduction = 10f;      // Time removed every 5 collectibles
+    public float minTimer = 10f;            // Minimum allowed timer
 
-    
-    // Start is called before the first frame update
+    public float CurrentTimer { get; private set; }
+    public int CollectedCount { get; private set; }
+
+    // UI listens to this
+    public event Action<float> OnTimerChanged;
+
+    private GameObject currentActiveCollectible;
+
     void Start()
     {
-        
+        // Disable all collectibles at the start
+        foreach (GameObject obj in collectibles)
+            obj.SetActive(false);
+
+        // Start the logic
+        CurrentTimer = baseTimer;
+        SpawnRandomCollectible();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (berryCount < 10)
+        if (currentActiveCollectible == null)
+            return;
+
+        // Countdown
+        CurrentTimer -= Time.deltaTime;
+
+        // Notify UI
+        OnTimerChanged?.Invoke(CurrentTimer);
+
+        // Timer expired
+        if (CurrentTimer <= 0f)
         {
-            time = 90f;
+            currentActiveCollectible.SetActive(false);
+            SpawnRandomCollectible();
         }
-        
-        if (berryCount >= 10 && berryCount < 30)
+    }
+
+    public void OnCollectiblePicked()
+    {
+        CollectedCount++;
+
+        // Disable current collectible
+        if (currentActiveCollectible != null)
+            currentActiveCollectible.SetActive(false);
+
+        // Every 5 collected → reduce timer
+        if (CollectedCount % 5 == 0)
         {
-            time = 30f;
+            baseTimer -= timerReduction;
+            baseTimer = Mathf.Max(baseTimer, minTimer);
         }
+
+        SpawnRandomCollectible();
+    }
+
+    private void SpawnRandomCollectible()
+    {
+        // Reset timer
+        CurrentTimer = baseTimer;
+
+        // Notify UI instantly
+        OnTimerChanged?.Invoke(CurrentTimer);
+
+        // Choose random collectible
+        int index = UnityEngine.Random.Range(0, collectibles.Length);
+        currentActiveCollectible = collectibles[index];
+
+        // Activate it
+        currentActiveCollectible.SetActive(true);
     }
 }

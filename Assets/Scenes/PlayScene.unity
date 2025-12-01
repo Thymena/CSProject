@@ -1250,7 +1250,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0eaac280277882f40bb156fee5637bc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  collectedCount: 0
+  lastRoundCollected: 0
 --- !u!4 &391865342 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5847605262182091113, guid: deec4428790585d4693cd585bf7230ba, type: 3}
@@ -1717,7 +1717,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0

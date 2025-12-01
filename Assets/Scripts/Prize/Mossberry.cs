@@ -1,33 +1,40 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Mossberry : MonoBehaviour
 {
     public CollectibleManager manager;
     private AudioSource audioSource;
-	private bool playerInside = false;
-    
+    private bool playerInside = false;
+
     public GameObject berry;
     public AudioClip[] audioClips;
 
-    // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>(); 
+        audioSource = GetComponent<AudioSource>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (playerInside && Input.GetKeyDown(KeyCode.F))
         {
-			audioSource.clip = audioClips[0];
-        	audioSource.Play();
+            audioSource.clip = audioClips[0];
+            audioSource.Play();
+
             manager.OnCollectiblePicked();
-            berry.SetActive(false);
+
+            // Start coroutine to delay disabling the object
+            StartCoroutine(DisableBerryWithDelay(0.3f));
         }
     }
+
+    private IEnumerator DisableBerryWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        berry.SetActive(false);
+    }
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if (other.CompareTag("Player"))

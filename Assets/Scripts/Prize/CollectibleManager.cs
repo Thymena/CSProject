@@ -4,10 +4,11 @@ using UnityEngine;
 public class CollectibleManager : MonoBehaviour
 {
     [Header("Collectible Settings")]
-    public GameObject[] collectibles;       // Assign your 9 collectibles
+    public GameObject[] collectibles;       
     public float baseTimer = 90f;           // Starting timer per collectible
     public float timerReduction = 10f;      // Time removed every 5 collectibles
-    public float minTimer = 10f;            // Minimum allowed timer
+    public float minTimer = 30f;
+    public event Action<int> OnCountChanged;    
 
     public float CurrentTimer { get; private set; }
     public int CollectedCount { get; private set; }
@@ -49,7 +50,11 @@ public class CollectibleManager : MonoBehaviour
 
     public void OnCollectiblePicked()
     {
-        CollectedCount++;
+        // Increase persistent count
+        GameManager.Instance.collectedCount++;
+
+        // Notify UI in this scene
+        OnCountChanged?.Invoke(GameManager.Instance.collectedCount);
 
         // Disable current collectible
         if (currentActiveCollectible != null)
@@ -80,4 +85,5 @@ public class CollectibleManager : MonoBehaviour
         // Activate it
         currentActiveCollectible.SetActive(true);
     }
+
 }

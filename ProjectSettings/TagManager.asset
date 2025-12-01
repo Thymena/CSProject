@@ -9,6 +9,7 @@ TagManager:
   - Floor
   - Spikes
   - SpikeBack
+  - Berry
   layers:
   - Default
   - TransparentFX

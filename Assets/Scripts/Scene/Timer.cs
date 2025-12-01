@@ -4,7 +4,7 @@ using TMPro;
 public class Timer : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI text;
-
+    
     public GameObject player;
     public PlayerHP playerHP;
 

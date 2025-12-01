@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Mossberry : MonoBehaviour
 {
- 	public AudioClip[] audioClips;
     private AudioSource audioSource;
 	private bool playerInside = false;
+    
     public GameObject berry;
+    public AudioClip[] audioClips;
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,6 @@ public class Mossberry : MonoBehaviour
         {
 			audioSource.clip = audioClips[0];
         	audioSource.Play();
-            gameObject.SetActive(false);
             berry.SetActive(false);
         }
     }

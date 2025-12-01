@@ -35,7 +35,6 @@ public class OnFire : MonoBehaviour
             {
                 playerHP = GetComponent<PlayerHP>();
                 playerHP.health -= damage;
-                Debug.Log("Player Died");
               
             }
         }

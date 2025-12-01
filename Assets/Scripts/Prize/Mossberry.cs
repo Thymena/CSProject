@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class Mossberry : MonoBehaviour
 {
-    public Rigidbody2D rb; 
  	public AudioClip[] audioClips;
     private AudioSource audioSource;
 	private bool playerInside = false;
+    public GameObject berry;
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(Delay());
+        audioSource = GetComponent<AudioSource>(); 
     }
 
     // Update is called once per frame
@@ -20,10 +20,10 @@ public class Mossberry : MonoBehaviour
     {
         if (playerInside && Input.GetKeyDown(KeyCode.F))
         {
-			audioSource = GetComponent<AudioSource>(); 
 			audioSource.clip = audioClips[0];
         	audioSource.Play();
-            Destroy(gameObject,0.3F);
+            gameObject.SetActive(false);
+            berry.SetActive(false);
         }
     }
     void OnTriggerEnter2D(Collider2D other)
@@ -40,13 +40,5 @@ public class Mossberry : MonoBehaviour
         {
             playerInside = false;
         }
-    }
-
-	IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(3f);
-
-        // Code that runs after the delay
-        Debug.Log("3 seconds have passed!");
     }
 }

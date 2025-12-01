@@ -4,19 +4,23 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    public int collectedCount = 0; // persistent count
+    [HideInInspector] public int lastRoundCollected = 0;
 
     private void Awake()
     {
-        // Singleton pattern
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); 
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
         }
+    }
+
+    public void ResetRound()
+    {
+        lastRoundCollected = 0;
     }
 }

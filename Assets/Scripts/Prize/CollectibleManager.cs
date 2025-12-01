@@ -20,14 +20,16 @@ public class CollectibleManager : MonoBehaviour
 
     void Start()
     {
-        // Disable all collectibles at the start
+        // Reset count for this round
+        GameManager.Instance.ResetRound();
+
         foreach (GameObject obj in collectibles)
             obj.SetActive(false);
 
-        // Start the logic
         CurrentTimer = baseTimer;
         SpawnRandomCollectible();
     }
+
 
     void Update()
     {
@@ -50,18 +52,13 @@ public class CollectibleManager : MonoBehaviour
 
     public void OnCollectiblePicked()
     {
-        // Increase persistent count
-        GameManager.Instance.collectedCount++;
+        // Increase count for this round
+        GameManager.Instance.lastRoundCollected++;
 
-        // Notify UI in this scene
-        OnCountChanged?.Invoke(GameManager.Instance.collectedCount);
+        OnCountChanged?.Invoke(GameManager.Instance.lastRoundCollected);
 
-        // Disable current collectible
-        if (currentActiveCollectible != null)
-            currentActiveCollectible.SetActive(false);
-
-        // Every 5 collected → reduce timer
-        if (CollectedCount % 5 == 0)
+        // Rest of your logic
+        if (GameManager.Instance.lastRoundCollected % 5 == 0)
         {
             baseTimer -= timerReduction;
             baseTimer = Mathf.Max(baseTimer, minTimer);
@@ -69,6 +66,7 @@ public class CollectibleManager : MonoBehaviour
 
         SpawnRandomCollectible();
     }
+
 
     private void SpawnRandomCollectible()
     {

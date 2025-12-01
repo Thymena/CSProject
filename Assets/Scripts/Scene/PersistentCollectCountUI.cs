@@ -1,13 +1,13 @@
 using UnityEngine;
 using TMPro;
 
-public class PersistentCollectCountUI : MonoBehaviour
+public class EndSceneUI : MonoBehaviour
 {
-    public TextMeshProUGUI countText;
+    public TextMeshProUGUI collectedText;
 
     void Start()
     {
-        // Initialize with current persistent count
-        countText.text = "" + GameManager.Instance.collectedCount;
+        // Display the last round's count
+        collectedText.text = "" + GameManager.Instance.lastRoundCollected;
     }
 }

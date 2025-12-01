@@ -707,7 +707,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 39aea45440a7b9648a42aea1aa220afc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  countText: {fileID: 1199995907}
+  collectedText: {fileID: 1199995907}
 --- !u!114 &1199995907
 MonoBehaviour:
   m_ObjectHideFlags: 0
